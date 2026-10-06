@@ -13,5 +13,7 @@ namespace RiftBuilds.Models
         [Required]
         [StringLength(200)]
         public string ImageUrl { get; set; } = string.Empty;
+
+        public ICollection<Build> Builds { get; set; } = new List<Build>();
     }
 }
