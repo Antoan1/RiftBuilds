@@ -10,7 +10,7 @@ namespace RiftBuilds.Models
         public string Name { get; set; } = string.Empty;
         
         [Required]
-        [StringLength(1000)]
+        [StringLength(500)]
         public string Description { get; set; } = string.Empty;
 
         [Range (0, int.MaxValue)]

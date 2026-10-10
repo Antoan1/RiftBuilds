@@ -15,6 +15,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 builder.Services.AddScoped<IChampionService, ChampionService>();
 builder.Services.AddScoped<IItemService, ItemService>();
+builder.Services.AddScoped<IBuildService, BuildService>();
 
 var app = builder.Build();
 
