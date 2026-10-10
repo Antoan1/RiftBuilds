@@ -14,6 +14,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     (builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddScoped<IChampionService, ChampionService>();
+builder.Services.AddScoped<IItemService, ItemService>();
 
 var app = builder.Build();
 

@@ -1,0 +1,35 @@
+﻿@model IEnumerable<RiftBuilds.Models.Item>
+
+@{
+    ViewData["Title"] = "Items";
+}
+
+<h1 class="mb-4">Items</h1>
+
+@if (!Model.Any())
+{
+    <p>No items available.</p>
+}
+else
+{
+    <div class="row g-4">
+        @foreach (var item in Model)
+        {
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <img src="@item.ImageUrl"
+                             alt="@item.Name"
+                             width="64"
+                             height="64"
+                             class="mb-3" />
+
+                        <h2 class="card-title h4">@item.Name</h2>
+                        <p class="card-text">@item.Description</p>
+                        <p class="fw-bold mb-0">Price: @item.Price gold</p>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
