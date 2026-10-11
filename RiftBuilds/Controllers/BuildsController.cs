@@ -22,6 +22,19 @@ namespace RiftBuilds.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> Details(int id)
+        {
+            var model = await buildService.GetDetailsAsync(id);
+
+            if (model == null)
+            {
+                return NotFound();
+            }
+
+            return View(model);
+        }
+
+        [HttpGet]
         public async Task<IActionResult> Create()
         {
             var model = new BuildFormViewModel();

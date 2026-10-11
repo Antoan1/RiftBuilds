@@ -1,0 +1,68 @@
+﻿@model RiftBuilds.ViewModels.Builds.BuildDetailsViewModel
+
+@{
+    ViewData["Title"] = Model.Title;
+}
+
+<h1 class="mb-4">@Model.Title</h1>
+
+<div class="row g-4">
+    <div class="col-md-5">
+        <img src="@Model.ChampionImageUrl"
+             alt="@Model.ChampionName"
+             class="img-fluid rounded" />
+    </div>
+
+    <div class="col-md-7">
+        <h2>@Model.ChampionName</h2>
+
+        <p><strong>Position:</strong> @Model.Position</p>
+
+        <p>
+            <strong>Created:</strong>
+            @Model.CreatedOn.ToString("dd.MM.yyyy HH:mm") UTC
+        </p>
+
+        <p class="text-break">@Model.Description</p>
+
+        <p>
+            <strong>Total item cost:</strong> @Model.TotalPrice gold
+        </p>
+    </div>
+</div>
+
+<h2 class="mt-4 mb-3">Items</h2>
+
+@if (!Model.Items.Any())
+{
+    <p>This build has no items.</p>
+}
+else
+{
+    <div class="row g-3">
+        @foreach (var item in Model.Items)
+        {
+            <div class="col-12 col-sm-6 col-lg-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <img src="@item.ImageUrl"
+                             alt="@item.Name"
+                             width="64"
+                             height="64"
+                             class="mb-2" />
+
+                        <h3 class="h5">@item.Name</h3>
+                        <p class="mb-1">Slot: @item.Slot</p>
+                        <p class="mb-0">Price: @item.Price gold</p>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+<a asp-controller="Builds"
+   asp-action="Index"
+   class="btn btn-secondary mt-4">
+    Back to Builds
+</a>

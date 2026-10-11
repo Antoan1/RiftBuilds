@@ -97,5 +97,33 @@ namespace RiftBuilds.Services
                 })
                 .ToListAsync();
         }
+
+        public async Task<BuildDetailsViewModel?> GetDetailsAsync(int id)
+        {
+            return await context.Builds
+                .AsNoTracking()
+                .Where(build => build.Id == id)
+                .Select(build => new BuildDetailsViewModel
+                {
+                    Id = build.Id,
+                    Title = build.Title,
+                    Description = build.Description,
+                    ChampionName = build.Champion.Name,
+                    ChampionImageUrl = build.Champion.ImageUrl,
+                    Position = build.Position,
+                    CreatedOn = build.CreatedOn,
+                    Items = build.BuildItems
+                        .OrderBy(buildItem => buildItem.Slot)
+                        .Select(buildItem => new BuildItemViewModel
+                        {
+                            Name = buildItem.Item.Name,
+                            ImageUrl = buildItem.Item.ImageUrl,
+                            Price = buildItem.Item.Price,
+                            Slot = buildItem.Slot
+                        })
+                        .ToList()
+                })
+                .FirstOrDefaultAsync();
+        }
     }
 }

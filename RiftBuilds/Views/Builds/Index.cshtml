@@ -36,12 +36,21 @@ else
 
                     <div class="card-body">
                         <h2 class="card-title h4">@build.Title</h2>
+
                         <p class="card-text">
                             Champion: @build.ChampionName
                         </p>
+
                         <p class="card-text">
                             Position: @build.Position
                         </p>
+
+                        <a asp-controller="Builds"
+                           asp-action="Details"
+                           asp-route-id="@build.Id"
+                           class="btn btn-primary">
+                            Details
+                        </a>
                     </div>
                 </div>
             </div>
