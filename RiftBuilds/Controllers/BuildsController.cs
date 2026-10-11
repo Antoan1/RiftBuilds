@@ -14,6 +14,14 @@ namespace RiftBuilds.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> Index()
+        {
+            var builds = await buildService.GetAllAsync();
+
+            return View(builds);
+        }
+
+        [HttpGet]
         public async Task<IActionResult> Create()
         {
             var model = new BuildFormViewModel();
@@ -61,7 +69,7 @@ namespace RiftBuilds.Controllers
 
             TempData["SuccessMessage"] = "Build created successfully.";
 
-            return RedirectToAction(nameof(Create));
+            return RedirectToAction(nameof(Index));
         }
     }
 }

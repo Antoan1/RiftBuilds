@@ -11,5 +11,7 @@ namespace RiftBuilds.Services.Interfaces
         Task<bool> ItemsExistAsync(int[] itemIds);
 
         Task<int> CreateAsync(BuildFormViewModel model);
+
+        Task<IEnumerable<BuildListViewModel>> GetAllAsync();
     }
 }

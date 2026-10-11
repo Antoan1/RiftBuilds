@@ -80,5 +80,22 @@ namespace RiftBuilds.Services
 
             return build.Id;
         }
+
+        public async Task<IEnumerable<BuildListViewModel>> GetAllAsync()
+        {
+            return await context.Builds
+                .AsNoTracking()
+                .OrderByDescending(build => build.CreatedOn)
+                .ThenByDescending(build => build.Id)
+                .Select(build => new BuildListViewModel
+                {
+                    Id = build.Id,
+                    Title = build.Title,
+                    ChampionName = build.Champion.Name,
+                    ChampionImageUrl = build.Champion.ImageUrl,
+                    Position = build.Position
+                })
+                .ToListAsync();
+        }
     }
 }
