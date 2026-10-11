@@ -1,0 +1,96 @@
+﻿@model RiftBuilds.ViewModels.Builds.BuildFormViewModel
+@using RiftBuilds.Models.Enums
+
+@{
+    ViewData["Title"] = "Edit Build";
+    var buildId = ViewData["BuildId"];
+}
+
+<h1 class="mb-4">Edit Build</h1>
+
+<div class="row">
+    <div class="col-md-8 col-lg-6">
+        <form asp-controller="Builds"
+              asp-action="Edit"
+              asp-route-id="@buildId"
+              method="post">
+
+            <div asp-validation-summary="All"
+                 class="text-danger mb-3"></div>
+
+            <div class="mb-3">
+                <label asp-for="Title" class="form-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title"
+                      class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Description" class="form-label"></label>
+                <textarea asp-for="Description"
+                          class="form-control"
+                          rows="4"></textarea>
+                <span asp-validation-for="Description"
+                      class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="ChampionId" class="form-label">
+                    Champion
+                </label>
+                <select asp-for="ChampionId"
+                        asp-items="Model.Champions"
+                        class="form-select">
+                    <option value="">Choose a champion</option>
+                </select>
+                <span asp-validation-for="ChampionId"
+                      class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Position" class="form-label"></label>
+                <select asp-for="Position"
+                        asp-items="Html.GetEnumSelectList<Position>()"
+                        class="form-select">
+                    <option value="">Choose a position</option>
+                </select>
+                <span asp-validation-for="Position"
+                      class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="SelectedItemIds" class="form-label">
+                    Items
+                </label>
+                <select asp-for="SelectedItemIds"
+                        asp-items="Model.Items"
+                        class="form-select"
+                        multiple
+                        size="8"
+                        aria-describedby="items-help">
+                </select>
+                <div id="items-help" class="form-text">
+                    Select between 1 and 6 items.
+                    Hold Ctrl on Windows to select or deselect items.
+                </div>
+                <span asp-validation-for="SelectedItemIds"
+                      class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="btn btn-primary">
+                Save Changes
+            </button>
+
+            <a asp-controller="Builds"
+               asp-action="Details"
+               asp-route-id="@buildId"
+               class="btn btn-secondary">
+                Cancel
+            </a>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

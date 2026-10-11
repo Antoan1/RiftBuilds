@@ -125,5 +125,82 @@ namespace RiftBuilds.Services
                 })
                 .FirstOrDefaultAsync();
         }
+        public async Task<BuildFormViewModel?> GetForEditAsync(int id)
+        {
+            var model = await context.Builds
+                .AsNoTracking()
+                .Where(build => build.Id == id)
+                .Select(build => new BuildFormViewModel
+                {
+                    Title = build.Title,
+                    Description = build.Description,
+                    ChampionId = build.ChampionId,
+                    Position = build.Position,
+                    SelectedItemIds = build.BuildItems
+                        .OrderBy(buildItem => buildItem.Slot)
+                        .Select(buildItem => buildItem.ItemId)
+                        .ToArray()
+                })
+                .FirstOrDefaultAsync();
+
+            if (model == null)
+            {
+                return null;
+            }
+
+            await PopulateOptionsAsync(model);
+
+            return model;
+        }
+        public async Task<bool> UpdateAsync(
+    int id,
+    BuildFormViewModel model)
+        {
+            var build = await context.Builds
+                .Include(build => build.BuildItems)
+                .FirstOrDefaultAsync(build => build.Id == id);
+
+            if (build == null)
+            {
+                return false;
+            }
+
+            build.Title = model.Title.Trim();
+            build.Description = model.Description.Trim();
+            build.ChampionId = model.ChampionId;
+            build.Position = model.Position;
+
+            var selectedIds = model.SelectedItemIds;
+
+            var itemsToRemove = build.BuildItems
+                .Where(buildItem => !selectedIds.Contains(buildItem.ItemId))
+                .ToList();
+
+            context.BuildItems.RemoveRange(itemsToRemove);
+
+            for (int i = 0; i < selectedIds.Length; i++)
+            {
+                var existingItem = build.BuildItems
+                    .FirstOrDefault(buildItem =>
+                        buildItem.ItemId == selectedIds[i]);
+
+                if (existingItem != null)
+                {
+                    existingItem.Slot = i + 1;
+                }
+                else
+                {
+                    build.BuildItems.Add(new BuildItem
+                    {
+                        ItemId = selectedIds[i],
+                        Slot = i + 1
+                    });
+                }
+            }
+
+            await context.SaveChangesAsync();
+
+            return true;
+        }
     }
 }

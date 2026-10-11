@@ -35,6 +35,75 @@ namespace RiftBuilds.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            var model = await buildService.GetForEditAsync(id);
+
+            if (model == null)
+            {
+                return NotFound();
+            }
+
+            ViewData["BuildId"] = id;
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(
+    int id,
+    BuildFormViewModel model)
+        {
+            if (await buildService.GetForEditAsync(id) == null)
+            {
+                return NotFound();
+            }
+
+            if (!await buildService.ChampionExistsAsync(model.ChampionId))
+            {
+                ModelState.AddModelError(
+                    nameof(model.ChampionId),
+                    "The selected champion does not exist.");
+            }
+
+            var itemIds = model.SelectedItemIds ?? Array.Empty<int>();
+
+            if (itemIds.Distinct().Count() != itemIds.Length)
+            {
+                ModelState.AddModelError(
+                    nameof(model.SelectedItemIds),
+                    "You cannot select the same item more than once.");
+            }
+
+            if (!await buildService.ItemsExistAsync(itemIds))
+            {
+                ModelState.AddModelError(
+                    nameof(model.SelectedItemIds),
+                    "One or more selected items do not exist.");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                await buildService.PopulateOptionsAsync(model);
+                ViewData["BuildId"] = id;
+
+                return View(model);
+            }
+
+            var updated = await buildService.UpdateAsync(id, model);
+
+            if (!updated)
+            {
+                return NotFound();
+            }
+
+            TempData["SuccessMessage"] = "Build updated successfully.";
+
+            return RedirectToAction(nameof(Details), new { id });
+        }
+
+        [HttpGet]
         public async Task<IActionResult> Create()
         {
             var model = new BuildFormViewModel();

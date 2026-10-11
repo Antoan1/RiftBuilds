@@ -15,5 +15,9 @@ namespace RiftBuilds.Services.Interfaces
         Task<IEnumerable<BuildListViewModel>> GetAllAsync();
 
         Task<BuildDetailsViewModel?> GetDetailsAsync(int id);
+
+        Task<BuildFormViewModel?> GetForEditAsync(int id);
+
+        Task<bool> UpdateAsync(int id, BuildFormViewModel model);
     }
 }
