@@ -12,9 +12,9 @@ namespace RiftBuilds.ViewModels.Builds
         [StringLength(100)]
         public string Title { get; set; } = string.Empty;
 
-        [Required]
+        
         [StringLength(500)]
-        public string Description { get; set; } = string.Empty;
+        public string? Description { get; set; } = string.Empty;
 
         [Range(1, int.MaxValue, ErrorMessage = "Please select a champion.")]
         public int ChampionId { get; set; }

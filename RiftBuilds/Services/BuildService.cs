@@ -61,7 +61,7 @@ namespace RiftBuilds.Services
             var build = new Build
             {
                 Title = model.Title.Trim(),
-                Description = model.Description.Trim(),
+                Description = model.Description?.Trim(),
                 ChampionId = model.ChampionId,
                 Position = model.Position,
                 CreatedOn = DateTime.UtcNow
@@ -108,7 +108,7 @@ namespace RiftBuilds.Services
                 {
                     Id = build.Id,
                     Title = build.Title,
-                    Description = build.Description,
+                    Description = build.Description ?? string.Empty,
                     ChampionName = build.Champion.Name,
                     ChampionImageUrl = build.Champion.ImageUrl,
                     Position = build.Position,
@@ -169,7 +169,7 @@ namespace RiftBuilds.Services
             }
 
             build.Title = model.Title.Trim();
-            build.Description = model.Description.Trim();
+            build.Description = model.Description?.Trim();
             build.ChampionId = model.ChampionId;
             build.Position = model.Position;
 

@@ -2,28 +2,37 @@
     ViewData["Title"] = "Home";
 }
 
-<section class="hero">
-    <p class="hero-kicker">League of Legends Build Planner</p>
+<section class="hero hero-with-art">
+    <div class="hero-content">
+        <p class="hero-kicker">League of Legends Build Planner</p>
 
-    <h1>Your champion.<br />Your strategy.</h1>
+        <h1>Your champion.<br />Your strategy.</h1>
 
-    <p class="hero-description">
-        Explore champions and items, create your own builds,
-        and keep your ideas ready for your next game on the Rift.
-    </p>
+        <p class="hero-description">
+            Explore champions and items, create your own builds,
+            and keep your ideas ready for your next game on the Rift.
+        </p>
 
-    <div class="hero-actions">
-        <a asp-controller="Builds"
-           asp-action="Index"
-           class="btn btn-primary">
-            Explore Builds
-        </a>
+        <div class="hero-actions">
+            <a asp-controller="Builds"
+               asp-action="Index"
+               class="btn btn-primary">
+                Explore Builds
+            </a>
 
-        <a asp-controller="Champions"
-           asp-action="Index"
-           class="btn btn-secondary">
-            View Champions
-        </a>
+            <a asp-controller="Champions"
+               asp-action="Index"
+               class="btn btn-secondary">
+                View Champions
+            </a>
+        </div>
+    </div>
+
+    <div class="hero-art">
+        <img src="~/images/home/nightbringer-yasuo.jpg"
+             asp-append-version="true"
+             alt="Nightbringer Yasuo"
+             fetchpriority="high" />
     </div>
 </section>
 

@@ -1,5 +1,6 @@
-﻿using RiftBuilds.Models.Enums;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
+using RiftBuilds.Models.Enums;
+
 namespace RiftBuilds.Models
 {
     public class Build
@@ -10,9 +11,8 @@ namespace RiftBuilds.Models
         [StringLength(100)]
         public string Title { get; set; } = string.Empty;
 
-        [Required]
         [StringLength(500)]
-        public string Description { get; set; } = string.Empty;
+        public string? Description { get; set; }
 
         [EnumDataType(typeof(Position))]
         public Position Position { get; set; }
@@ -23,6 +23,7 @@ namespace RiftBuilds.Models
 
         public Champion Champion { get; set; } = null!;
 
-        public ICollection<BuildItem> BuildItems { get; set; } = new List<BuildItem>();
+        public ICollection<BuildItem> BuildItems { get; set; }
+            = new List<BuildItem>();
     }
 }

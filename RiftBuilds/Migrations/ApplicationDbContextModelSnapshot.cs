@@ -37,7 +37,6 @@ namespace RiftBuilds.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
@@ -405,6 +404,190 @@ namespace RiftBuilds.Migrations
                             ImageUrl = "/images/items/berserkers-greaves.png",
                             Name = "Berserker's Greaves",
                             Price = 1100
+                        },
+                        new
+                        {
+                            Id = 13,
+                            Description = "An offensive option for builds focused on ability power.",
+                            ImageUrl = "/images/items/rabadons-deathcap.png",
+                            Name = "Rabadon's Deathcap",
+                            Price = 3600
+                        },
+                        new
+                        {
+                            Id = 14,
+                            Description = "A defensive option for mages who need protection during dangerous fights.",
+                            ImageUrl = "/images/items/zhonyas-hourglass.png",
+                            Name = "Zhonya's Hourglass",
+                            Price = 3250
+                        },
+                        new
+                        {
+                            Id = 15,
+                            Description = "A magic penetration option for fighting enemies with magic resistance.",
+                            ImageUrl = "/images/items/void-staff.png",
+                            Name = "Void Staff",
+                            Price = 3000
+                        },
+                        new
+                        {
+                            Id = 16,
+                            Description = "A classic mage item for builds focused on burst magic damage.",
+                            ImageUrl = "/images/items/ludens-echo.png",
+                            Name = "Luden's Echo",
+                            Price = 3200
+                        },
+                        new
+                        {
+                            Id = 17,
+                            Description = "A versatile offensive option for combining abilities with basic attacks.",
+                            ImageUrl = "/images/items/trinity-force.png",
+                            Name = "Trinity Force",
+                            Price = 3333
+                        },
+                        new
+                        {
+                            Id = 18,
+                            Description = "An attack-focused option for sustained damage and recovering health.",
+                            ImageUrl = "/images/items/blade-of-the-ruined-king.png",
+                            Name = "Blade of the Ruined King",
+                            Price = 3200
+                        },
+                        new
+                        {
+                            Id = 19,
+                            Description = "An offensive option for physical damage builds that benefit from mobility.",
+                            ImageUrl = "/images/items/youmuus-ghostblade.png",
+                            Name = "Youmuu's Ghostblade",
+                            Price = 2800
+                        },
+                        new
+                        {
+                            Id = 20,
+                            Description = "A fighter item that combines physical offense with defensive utility.",
+                            ImageUrl = "/images/items/deaths-dance.png",
+                            Name = "Death's Dance",
+                            Price = 3300
+                        },
+                        new
+                        {
+                            Id = 21,
+                            Description = "A defensive option for magic resistance and stronger healing effects.",
+                            ImageUrl = "/images/items/spirit-visage.png",
+                            Name = "Spirit Visage",
+                            Price = 2700
+                        },
+                        new
+                        {
+                            Id = 22,
+                            Description = "A durable frontline option for fighting enemies at close range.",
+                            ImageUrl = "/images/items/sunfire-aegis.png",
+                            Name = "Sunfire Aegis",
+                            Price = 2700
+                        },
+                        new
+                        {
+                            Id = 23,
+                            Description = "A defensive option for facing enemies who rely on critical strikes.",
+                            ImageUrl = "/images/items/randuins-omen.png",
+                            Name = "Randuin's Omen",
+                            Price = 2700
+                        },
+                        new
+                        {
+                            Id = 24,
+                            Description = "A support option for protecting nearby allies during team fights.",
+                            ImageUrl = "/images/items/locket-of-the-iron-solari.png",
+                            Name = "Locket of the Iron Solari",
+                            Price = 2200
+                        },
+                        new
+                        {
+                            Id = 25,
+                            Description = "A protective support option for helping a chosen ally survive.",
+                            ImageUrl = "/images/items/knights-vow.png",
+                            Name = "Knight's Vow",
+                            Price = 2300
+                        },
+                        new
+                        {
+                            Id = 26,
+                            Description = "A support option for helping an ally recover from disabling effects.",
+                            ImageUrl = "/images/items/mikaels-blessing.png",
+                            Name = "Mikael's Blessing",
+                            Price = 2300
+                        },
+                        new
+                        {
+                            Id = 27,
+                            Description = "Defensive boots for magic resistance and resistance to crowd control.",
+                            ImageUrl = "/images/items/mercurys-treads.png",
+                            Name = "Mercury's Treads",
+                            Price = 1300
+                        },
+                        new
+                        {
+                            Id = 28,
+                            Description = "Offensive boots for builds focused on magic damage.",
+                            ImageUrl = "/images/items/sorcerers-shoes.png",
+                            Name = "Sorcerer's Shoes",
+                            Price = 1100
+                        },
+                        new
+                        {
+                            Id = 29,
+                            Description = "An offensive and defensive option that offers a second chance in combat.",
+                            ImageUrl = "/images/items/guardian-angel.png",
+                            Name = "Guardian Angel",
+                            Price = 3200
+                        },
+                        new
+                        {
+                            Id = 30,
+                            Description = "An offensive option for combining ability power with frequent basic attacks.",
+                            ImageUrl = "/images/items/nashors-tooth.png",
+                            Name = "Nashor's Tooth",
+                            Price = 3000
+                        },
+                        new
+                        {
+                            Id = 31,
+                            Description = "An offensive option for rapid attacks and builds focused on on-hit effects.",
+                            ImageUrl = "/images/items/guinsoos-rageblade.png",
+                            Name = "Guinsoo's Rageblade",
+                            Price = 3000
+                        },
+                        new
+                        {
+                            Id = 32,
+                            Description = "An armor penetration option for physical damage and critical strike builds.",
+                            ImageUrl = "/images/items/lord-dominiks-regards.png",
+                            Name = "Lord Dominik's Regards",
+                            Price = 3100
+                        },
+                        new
+                        {
+                            Id = 33,
+                            Description = "An attack-speed option for setting up attacks from a safer distance.",
+                            ImageUrl = "/images/items/rapid-firecannon.png",
+                            Name = "Rapid Firecannon",
+                            Price = 2650
+                        },
+                        new
+                        {
+                            Id = 34,
+                            Description = "A magic damage option for wearing down enemies during extended fights.",
+                            ImageUrl = "/images/items/liandrys-torment.png",
+                            Name = "Liandry's Torment",
+                            Price = 3000
+                        },
+                        new
+                        {
+                            Id = 35,
+                            Description = "A defensive option for armor, mana, and facing fast-attacking enemies.",
+                            ImageUrl = "/images/items/frozen-heart.png",
+                            Name = "Frozen Heart",
+                            Price = 2500
                         });
                 });
 
