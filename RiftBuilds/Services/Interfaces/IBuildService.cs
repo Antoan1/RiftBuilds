@@ -19,5 +19,7 @@ namespace RiftBuilds.Services.Interfaces
         Task<BuildFormViewModel?> GetForEditAsync(int id);
 
         Task<bool> UpdateAsync(int id, BuildFormViewModel model);
+
+        Task<bool> DeleteAsync(int id);
     }
 }

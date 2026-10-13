@@ -202,5 +202,23 @@ namespace RiftBuilds.Services
 
             return true;
         }
+        public async Task<bool> DeleteAsync(int id)
+        {
+            var build = await context.Builds
+                .Include(build => build.BuildItems)
+                .FirstOrDefaultAsync(build => build.Id == id);
+
+            if (build == null)
+            {
+                return false;
+            }
+
+            context.BuildItems.RemoveRange(build.BuildItems);
+            context.Builds.Remove(build);
+
+            await context.SaveChangesAsync();
+
+            return true;
+        }
     }
 }

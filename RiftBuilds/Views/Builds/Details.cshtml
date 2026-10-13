@@ -76,6 +76,13 @@ else
 </a>
 
 <a asp-controller="Builds"
+   asp-action="Delete"
+   asp-route-id="@Model.Id"
+   class="btn btn-danger mt-4">
+    Delete
+</a>
+
+<a asp-controller="Builds"
    asp-action="Index"
    class="btn btn-secondary mt-4">
     Back to Builds

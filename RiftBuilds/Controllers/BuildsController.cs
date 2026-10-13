@@ -35,6 +35,36 @@ namespace RiftBuilds.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var model = await buildService.GetDetailsAsync(id);
+
+            if (model == null)
+            {
+                return NotFound();
+            }
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var deleted = await buildService.DeleteAsync(id);
+
+            if (!deleted)
+            {
+                return NotFound();
+            }
+
+            TempData["SuccessMessage"] = "Build deleted successfully.";
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
             var model = await buildService.GetForEditAsync(id);
