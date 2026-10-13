@@ -3,7 +3,7 @@
 <fieldset class="mb-3">
     <legend class="fs-6">Items</legend>
 
-    <p class="form-text">
+    <p id="items-help" class="form-text">
         Select between 1 and 6 items.
     </p>
 
@@ -11,20 +11,26 @@
         @foreach (var item in Model.Items)
         {
             var isSelected = Model.SelectedItemIds?
-            .Contains(int.Parse(item.Value)) == true;
+            .Contains(item.Id) == true;
 
             <div class="col-12 col-sm-6">
-                <div class="form-check">
+                <div class="item-option">
                     <input type="checkbox"
-                           class="form-check-input"
-                           id="item-@item.Value"
+                           class="item-option-input"
+                           id="item-@item.Id"
                            name="SelectedItemIds"
-                           value="@item.Value"
-                           checked="@isSelected" />
+                           value="@item.Id"
+                           checked="@isSelected"
+                           aria-describedby="items-help" />
 
-                    <label class="form-check-label"
-                           for="item-@item.Value">
-                        @item.Text
+                    <label class="item-option-label"
+                           for="item-@item.Id">
+                        <img src="@item.ImageUrl"
+                             alt=""
+                             width="48"
+                             height="48" />
+
+                        <span>@item.Name</span>
                     </label>
                 </div>
             </div>

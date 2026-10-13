@@ -33,7 +33,7 @@ namespace RiftBuilds.ViewModels.Builds
             = new List<SelectListItem>();
 
         [ValidateNever]
-        public IEnumerable<SelectListItem> Items { get; set; }
-            = new List<SelectListItem>();
+        public IEnumerable<ItemOptionViewModel> Items { get; set; }
+    = new List<ItemOptionViewModel>();
     }
 }

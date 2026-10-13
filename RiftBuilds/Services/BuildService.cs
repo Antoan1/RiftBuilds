@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using RiftBuilds.Data;
+using RiftBuilds.Models;
 using RiftBuilds.Services.Interfaces;
 using RiftBuilds.ViewModels.Builds;
-using RiftBuilds.Models;
 
 namespace RiftBuilds.Services
 {
@@ -31,10 +31,11 @@ namespace RiftBuilds.Services
             model.Items = await context.Items
                 .AsNoTracking()
                 .OrderBy(item => item.Name)
-                .Select(item => new SelectListItem
+                .Select(item => new ItemOptionViewModel
                 {
-                    Value = item.Id.ToString(),
-                    Text = item.Name
+                    Id = item.Id,
+                    Name = item.Name,
+                    ImageUrl = item.ImageUrl
                 })
                 .ToListAsync();
         }
@@ -125,6 +126,7 @@ namespace RiftBuilds.Services
                 })
                 .FirstOrDefaultAsync();
         }
+
         public async Task<BuildFormViewModel?> GetForEditAsync(int id)
         {
             var model = await context.Builds
@@ -152,9 +154,10 @@ namespace RiftBuilds.Services
 
             return model;
         }
+
         public async Task<bool> UpdateAsync(
-    int id,
-    BuildFormViewModel model)
+            int id,
+            BuildFormViewModel model)
         {
             var build = await context.Builds
                 .Include(build => build.BuildItems)
@@ -202,6 +205,7 @@ namespace RiftBuilds.Services
 
             return true;
         }
+
         public async Task<bool> DeleteAsync(int id)
         {
             var build = await context.Builds
