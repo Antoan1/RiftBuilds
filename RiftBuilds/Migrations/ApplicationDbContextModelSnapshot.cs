@@ -136,6 +136,146 @@ namespace RiftBuilds.Migrations
                             Description = "A support champion who protects allies with shields and empowers them with magical abilities.",
                             ImageUrl = "/images/champions/lulu.jpg",
                             Name = "Lulu"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Description = "An axe-wielding fighter who pressures nearby enemies and excels in extended battles.",
+                            ImageUrl = "/images/champions/darius.jpg",
+                            Name = "Darius"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Description = "A resilient warrior who charges into combat with a greatsword and finishes weakened opponents.",
+                            ImageUrl = "/images/champions/garen.jpg",
+                            Name = "Garen"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Description = "A precise duelist who exploits weak points and counters incoming attacks.",
+                            ImageUrl = "/images/champions/fiora.jpg",
+                            Name = "Fiora"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            Description = "A durable frontline champion who disrupts enemies and initiates team fights.",
+                            ImageUrl = "/images/champions/malphite.jpg",
+                            Name = "Malphite"
+                        },
+                        new
+                        {
+                            Id = 10,
+                            Description = "A mobile martial artist who combines quick movement with powerful strikes and kicks.",
+                            ImageUrl = "/images/champions/lee-sin.jpg",
+                            Name = "Lee Sin"
+                        },
+                        new
+                        {
+                            Id = 11,
+                            Description = "An aggressive fighter who uses powerful gauntlets to break through defenses and reach priority targets.",
+                            ImageUrl = "/images/champions/vi.jpg",
+                            Name = "Vi"
+                        },
+                        new
+                        {
+                            Id = 12,
+                            Description = "A relentless hunter who tracks wounded enemies and sustains himself through close combat.",
+                            ImageUrl = "/images/champions/warwick.jpg",
+                            Name = "Warwick"
+                        },
+                        new
+                        {
+                            Id = 13,
+                            Description = "A mounted frontline champion who uses frost and crowd control to set up fights for her team.",
+                            ImageUrl = "/images/champions/sejuani.jpg",
+                            Name = "Sejuani"
+                        },
+                        new
+                        {
+                            Id = 14,
+                            Description = "A mobile mage who uses charm and magical attacks to catch enemies and reposition during fights.",
+                            ImageUrl = "/images/champions/ahri.jpg",
+                            Name = "Ahri"
+                        },
+                        new
+                        {
+                            Id = 15,
+                            Description = "An assassin who uses shadows to outmaneuver opponents and threaten vulnerable targets.",
+                            ImageUrl = "/images/champions/zed.jpg",
+                            Name = "Zed"
+                        },
+                        new
+                        {
+                            Id = 16,
+                            Description = "A long-range mage who combines light-based attacks, protective shields, and crowd control.",
+                            ImageUrl = "/images/champions/lux.jpg",
+                            Name = "Lux"
+                        },
+                        new
+                        {
+                            Id = 17,
+                            Description = "A mage who controls dark spheres to pressure enemies and deliver concentrated magical damage.",
+                            ImageUrl = "/images/champions/syndra.jpg",
+                            Name = "Syndra"
+                        },
+                        new
+                        {
+                            Id = 18,
+                            Description = "A long-range marksman who uses careful positioning and traps to control the battlefield.",
+                            ImageUrl = "/images/champions/caitlyn.jpg",
+                            Name = "Caitlyn"
+                        },
+                        new
+                        {
+                            Id = 19,
+                            Description = "A marksman who slows enemies with frost arrows and helps her team with vision and initiation.",
+                            ImageUrl = "/images/champions/ashe.jpg",
+                            Name = "Ashe"
+                        },
+                        new
+                        {
+                            Id = 20,
+                            Description = "A mobile marksman who relies on aimed abilities and repositioning to deal damage from a distance.",
+                            ImageUrl = "/images/champions/ezreal.jpg",
+                            Name = "Ezreal"
+                        },
+                        new
+                        {
+                            Id = 21,
+                            Description = "An adaptable marksman who combines weapon attacks and Void abilities to pursue exposed targets.",
+                            ImageUrl = "/images/champions/kaisa.jpg",
+                            Name = "Kai'Sa"
+                        },
+                        new
+                        {
+                            Id = 22,
+                            Description = "An armored support who initiates fights and holds enemies in place with crowd control.",
+                            ImageUrl = "/images/champions/leona.jpg",
+                            Name = "Leona"
+                        },
+                        new
+                        {
+                            Id = 23,
+                            Description = "A support who catches enemies with his hook and helps allies escape using his lantern.",
+                            ImageUrl = "/images/champions/thresh.jpg",
+                            Name = "Thresh"
+                        },
+                        new
+                        {
+                            Id = 24,
+                            Description = "A support mage who uses water magic to heal allies, enhance attacks, and disrupt enemies.",
+                            ImageUrl = "/images/champions/nami.jpg",
+                            Name = "Nami"
+                        },
+                        new
+                        {
+                            Id = 25,
+                            Description = "A heavily armored support who uses his anchor and crowd control to engage and protect allies.",
+                            ImageUrl = "/images/champions/nautilus.jpg",
+                            Name = "Nautilus"
                         });
                 });
 
@@ -149,8 +289,8 @@ namespace RiftBuilds.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasMaxLength(1000)
-                        .HasColumnType("nvarchar(1000)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("ImageUrl")
                         .IsRequired()
