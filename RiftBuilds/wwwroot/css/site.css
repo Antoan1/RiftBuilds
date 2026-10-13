@@ -1,22 +1,217 @@
-html {
-  font-size: 14px;
+:root {
+    --page-bg: #091321;
+    --surface: #122238;
+    --field-bg: #0c192b;
+    --text: #edf2f8;
+    --muted: #afbed0;
+    --gold: #e0bb69;
+    --gold-hover: #f0ce83;
+    --border: #344861;
 }
 
-@media (min-width: 768px) {
-  html {
+html {
     font-size: 16px;
-  }
-}
-
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-html {
-  position: relative;
-  min-height: 100%;
+    min-height: 100%;
 }
 
 body {
-  margin-bottom: 60px;
+    min-height: 100vh;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    background: radial-gradient( ellipse at top right, #18304e 0, var(--page-bg) 60% );
+    color: var(--text);
+    font-family: "Segoe UI", sans-serif;
+}
+
+main {
+    padding-top: 2rem;
+    padding-bottom: 3rem;
+}
+
+h1, h2, h3 {
+    font-weight: 700;
+}
+
+a {
+    color: var(--gold);
+}
+
+    a:hover {
+        color: var(--gold-hover);
+    }
+
+.text-muted,
+.form-text {
+    color: var(--muted) !important;
+}
+
+.card {
+    background-color: var(--surface);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.18);
+}
+
+.card-body {
+    padding: 1.5rem;
+}
+
+.card-img-top {
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+}
+
+.btn {
+    border-radius: 8px;
+    padding: 0.65rem 1.15rem;
+    font-weight: 600;
+}
+
+.btn-primary {
+    color: #101b2a;
+    background-color: var(--gold);
+    border-color: var(--gold);
+}
+
+    .btn-primary:hover,
+    .btn-primary:focus,
+    .btn-primary:active {
+        color: #101b2a !important;
+        background-color: var(--gold-hover) !important;
+        border-color: var(--gold-hover) !important;
+    }
+
+.btn-secondary {
+    color: var(--text);
+    background-color: #263b54;
+    border-color: #516984;
+}
+
+    .btn-secondary:hover,
+    .btn-secondary:focus,
+    .btn-secondary:active {
+        color: #fff !important;
+        background-color: #354f6d !important;
+        border-color: #748ba5 !important;
+    }
+
+.btn-danger {
+    background-color: #b52e42;
+    border-color: #b52e42;
+}
+
+    .btn-danger:hover {
+        background-color: #942337;
+        border-color: #942337;
+    }
+
+.form-control,
+.form-select {
+    color: var(--text);
+    background-color: var(--field-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.7rem;
+    color-scheme: dark;
+}
+
+.form-select {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23edf2f8' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+}
+
+    .form-control:focus,
+    .form-select:focus {
+        color: var(--text);
+        background-color: var(--field-bg);
+        border-color: var(--gold);
+        box-shadow: 0 0 0 0.2rem rgba(224, 187, 105, 0.2);
+    }
+
+.form-control::placeholder {
+    color: var(--muted);
+}
+
+.form-select option {
+    background-color: var(--field-bg);
+    color: var(--text);
+}
+
+.form-label {
+    font-weight: 600;
+}
+
+.form-check-input {
+    background-color: var(--field-bg);
+    border-color: #8295ad;
+}
+
+    .form-check-input:checked {
+        background-color: #947025;
+        border-color: var(--gold);
+    }
+
+    .form-check-input:focus {
+        border-color: var(--gold);
+        box-shadow: 0 0 0 0.2rem rgba(224, 187, 105, 0.2);
+    }
+
+.text-danger {
+    color: #ff9ca9 !important;
+}
+
+.input-validation-error {
+    border-color: #ff9ca9;
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible {
+    outline: 3px solid var(--gold);
+    outline-offset: 3px;
+}
+
+.hero {
+    padding: clamp(2rem, 6vw, 5rem);
+    background: linear-gradient(135deg, #19324e, #101e31);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    margin-bottom: 2rem;
+}
+
+.hero-kicker {
+    color: var(--gold);
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+.hero h1 {
+    font-size: clamp(2.5rem, 7vw, 4.5rem);
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+}
+
+.hero-description {
+    color: var(--muted);
+    max-width: 620px;
+    font-size: 1.15rem;
+    line-height: 1.8;
+}
+
+.hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 2rem;
+}
+
+.feature-number {
+    display: block;
+    color: var(--gold);
+    font-weight: 700;
+    margin-bottom: 1rem;
 }

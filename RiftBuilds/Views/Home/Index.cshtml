@@ -1,8 +1,82 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Home";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<section class="hero">
+    <p class="hero-kicker">League of Legends Build Planner</p>
+
+    <h1>Your champion.<br />Your strategy.</h1>
+
+    <p class="hero-description">
+        Explore champions and items, create your own builds,
+        and keep your ideas ready for your next game on the Rift.
+    </p>
+
+    <div class="hero-actions">
+        <a asp-controller="Builds"
+           asp-action="Index"
+           class="btn btn-primary">
+            Explore Builds
+        </a>
+
+        <a asp-controller="Champions"
+           asp-action="Index"
+           class="btn btn-secondary">
+            View Champions
+        </a>
+    </div>
+</section>
+
+<section aria-labelledby="explore-heading">
+    <h2 id="explore-heading" class="mb-4">Plan your next build</h2>
+
+    <div class="row g-4">
+        <div class="col-12 col-md-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <span class="feature-number">01 / CHAMPIONS</span>
+                    <h3 class="h4">Pick your champion</h3>
+                    <p class="text-muted">
+                        Meet the champions in our collection
+                        and choose who your next build is for.
+                    </p>
+                    <a asp-controller="Champions" asp-action="Index">
+                        Browse champions &rarr;
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <span class="feature-number">02 / ITEMS</span>
+                    <h3 class="h4">Explore your options</h3>
+                    <p class="text-muted">
+                        Browse item descriptions and gold costs
+                        before choosing your combination.
+                    </p>
+                    <a asp-controller="Items" asp-action="Index">
+                        Browse items &rarr;
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <span class="feature-number">03 / BUILDS</span>
+                    <h3 class="h4">Create your strategy</h3>
+                    <p class="text-muted">
+                        Choose a position, combine up to six items,
+                        and add your own notes.
+                    </p>
+                    <a asp-controller="Builds" asp-action="Create">
+                        Create a build &rarr;
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
