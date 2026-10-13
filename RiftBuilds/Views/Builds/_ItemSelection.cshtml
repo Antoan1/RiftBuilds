@@ -1,0 +1,36 @@
+﻿@model RiftBuilds.ViewModels.Builds.BuildFormViewModel
+
+<fieldset class="mb-3">
+    <legend class="fs-6">Items</legend>
+
+    <p class="form-text">
+        Select between 1 and 6 items.
+    </p>
+
+    <div class="row g-2">
+        @foreach (var item in Model.Items)
+        {
+            var isSelected = Model.SelectedItemIds?
+            .Contains(int.Parse(item.Value)) == true;
+
+            <div class="col-12 col-sm-6">
+                <div class="form-check">
+                    <input type="checkbox"
+                           class="form-check-input"
+                           id="item-@item.Value"
+                           name="SelectedItemIds"
+                           value="@item.Value"
+                           checked="@isSelected" />
+
+                    <label class="form-check-label"
+                           for="item-@item.Value">
+                        @item.Text
+                    </label>
+                </div>
+            </div>
+        }
+    </div>
+
+    <span asp-validation-for="SelectedItemIds"
+          class="text-danger"></span>
+</fieldset>
