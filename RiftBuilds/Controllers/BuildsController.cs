@@ -90,28 +90,7 @@ namespace RiftBuilds.Controllers
                 return NotFound();
             }
 
-            if (!await buildService.ChampionExistsAsync(model.ChampionId))
-            {
-                ModelState.AddModelError(
-                    nameof(model.ChampionId),
-                    "The selected champion does not exist.");
-            }
-
-            var itemIds = model.SelectedItemIds ?? Array.Empty<int>();
-
-            if (itemIds.Distinct().Count() != itemIds.Length)
-            {
-                ModelState.AddModelError(
-                    nameof(model.SelectedItemIds),
-                    "You cannot select the same item more than once.");
-            }
-
-            if (!await buildService.ItemsExistAsync(itemIds))
-            {
-                ModelState.AddModelError(
-                    nameof(model.SelectedItemIds),
-                    "One or more selected items do not exist.");
-            }
+            await ValidateBuildSelectionAsync(model);
 
             if (!ModelState.IsValid)
             {
@@ -147,6 +126,24 @@ namespace RiftBuilds.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(BuildFormViewModel model)
         {
+            await ValidateBuildSelectionAsync(model);
+
+            if (!ModelState.IsValid)
+            {
+                await buildService.PopulateOptionsAsync(model);
+
+                return View(model);
+            }
+
+            await buildService.CreateAsync(model);
+
+            TempData["SuccessMessage"] = "Build created successfully.";
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        private async Task ValidateBuildSelectionAsync(BuildFormViewModel model)
+        {
             if (!await buildService.ChampionExistsAsync(model.ChampionId))
             {
                 ModelState.AddModelError(
@@ -169,19 +166,6 @@ namespace RiftBuilds.Controllers
                     nameof(model.SelectedItemIds),
                     "One or more selected items do not exist.");
             }
-
-            if (!ModelState.IsValid)
-            {
-                await buildService.PopulateOptionsAsync(model);
-
-                return View(model);
-            }
-
-            await buildService.CreateAsync(model);
-
-            TempData["SuccessMessage"] = "Build created successfully.";
-
-            return RedirectToAction(nameof(Index));
         }
     }
 }
