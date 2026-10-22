@@ -60,12 +60,10 @@ namespace RiftBuilds.Services
         {
             var build = new Build
             {
-                Title = model.Title.Trim(),
-                Description = model.Description?.Trim(),
-                ChampionId = model.ChampionId,
-                Position = model.Position,
                 CreatedOn = DateTime.UtcNow
             };
+
+            ApplyFormValues(build, model);
 
             for (int i = 0; i < model.SelectedItemIds.Length; i++)
             {
@@ -168,10 +166,7 @@ namespace RiftBuilds.Services
                 return false;
             }
 
-            build.Title = model.Title.Trim();
-            build.Description = model.Description?.Trim();
-            build.ChampionId = model.ChampionId;
-            build.Position = model.Position;
+            ApplyFormValues(build, model);
 
             var selectedIds = model.SelectedItemIds;
 
@@ -223,6 +218,16 @@ namespace RiftBuilds.Services
             await context.SaveChangesAsync();
 
             return true;
+        }
+
+        private static void ApplyFormValues(
+    Build build,
+    BuildFormViewModel model)
+        {
+            build.Title = model.Title.Trim();
+            build.Description = model.Description?.Trim();
+            build.ChampionId = model.ChampionId;
+            build.Position = model.Position;
         }
     }
 }
