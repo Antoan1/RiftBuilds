@@ -1,0 +1,68 @@
+﻿@model RiftBuilds.ViewModels.Account.RegisterViewModel
+
+@{
+    ViewData["Title"] = "Register";
+}
+
+<h1 class="mb-4">Create an account</h1>
+
+<div class="row">
+    <div class="col-md-8 col-lg-6">
+        <form asp-controller="Account"
+              asp-action="Register"
+              method="post">
+
+            <div asp-validation-summary="All"
+                 class="text-danger mb-3"></div>
+
+            <div class="mb-3">
+                <label asp-for="Email" class="form-label"></label>
+                <input asp-for="Email"
+                       class="form-control"
+                       autocomplete="email" />
+                <span asp-validation-for="Email"
+                      class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Password" class="form-label"></label>
+                <input asp-for="Password"
+                       class="form-control"
+                       autocomplete="new-password"
+                       aria-describedby="password-help" />
+
+                <div id="password-help" class="form-text">
+                    Use 8–100 characters, including an uppercase letter,
+                    a lowercase letter, a number, and a special character.
+                </div>
+
+                <span asp-validation-for="Password"
+                      class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="ConfirmPassword"
+                       class="form-label"></label>
+                <input asp-for="ConfirmPassword"
+                       class="form-control"
+                       autocomplete="new-password" />
+                <span asp-validation-for="ConfirmPassword"
+                      class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="btn btn-primary">
+                Register
+            </button>
+
+            <a asp-controller="Home"
+               asp-action="Index"
+               class="btn btn-secondary">
+                Cancel
+            </a>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
