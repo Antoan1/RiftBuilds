@@ -26,10 +26,22 @@
 
             <div class="mb-3">
                 <label asp-for="Password" class="form-label"></label>
-                <input asp-for="Password"
-                       class="form-control"
-                       autocomplete="new-password"
-                       aria-describedby="password-help" />
+
+                <div class="input-group">
+                    <input asp-for="Password"
+                           class="form-control"
+                           autocomplete="new-password"
+                           aria-describedby="password-help" />
+
+                    <button type="button"
+                            class="btn btn-secondary"
+                            data-password-toggle="Password"
+                            aria-controls="Password"
+                            aria-label="Show password"
+                            aria-pressed="false">
+                        Show
+                    </button>
+                </div>
 
                 <div id="password-help" class="form-text">
                     Use 8–100 characters, including an uppercase letter,
@@ -43,9 +55,22 @@
             <div class="mb-3">
                 <label asp-for="ConfirmPassword"
                        class="form-label"></label>
-                <input asp-for="ConfirmPassword"
-                       class="form-control"
-                       autocomplete="new-password" />
+
+                <div class="input-group">
+                    <input asp-for="ConfirmPassword"
+                           class="form-control"
+                           autocomplete="new-password" />
+
+                    <button type="button"
+                            class="btn btn-secondary"
+                            data-password-toggle="ConfirmPassword"
+                            aria-controls="ConfirmPassword"
+                            aria-label="Show password confirmation"
+                            aria-pressed="false">
+                        Show
+                    </button>
+                </div>
+
                 <span asp-validation-for="ConfirmPassword"
                       class="text-danger"></span>
             </div>
@@ -60,6 +85,13 @@
                 Cancel
             </a>
         </form>
+
+        <p class="mt-4">
+            Already have an account?
+            <a asp-controller="Account" asp-action="Login">
+                Login
+            </a>
+        </p>
     </div>
 </div>
 

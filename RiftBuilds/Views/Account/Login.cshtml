@@ -31,9 +31,22 @@
 
             <div class="mb-3">
                 <label asp-for="Password" class="form-label"></label>
-                <input asp-for="Password"
-                       class="form-control"
-                       autocomplete="current-password" />
+
+                <div class="input-group">
+                    <input asp-for="Password"
+                           class="form-control"
+                           autocomplete="current-password" />
+
+                    <button type="button"
+                            class="btn btn-secondary"
+                            data-password-toggle="Password"
+                            aria-controls="Password"
+                            aria-label="Show password"
+                            aria-pressed="false">
+                        Show
+                    </button>
+                </div>
+
                 <span asp-validation-for="Password"
                       class="text-danger"></span>
             </div>
