@@ -56,11 +56,21 @@ namespace RiftBuilds.Services
             return existingCount == uniqueIds.Length;
         }
 
-        public async Task<int> CreateAsync(BuildFormViewModel model)
+        public async Task<int> CreateAsync(
+            BuildFormViewModel model,
+            string userId)
         {
+            if (string.IsNullOrWhiteSpace(userId))
+            {
+                throw new ArgumentException(
+                    "An author is required.",
+                    nameof(userId));
+            }
+
             var build = new Build
             {
-                CreatedOn = DateTime.UtcNow
+                CreatedOn = DateTime.UtcNow,
+                AuthorId = userId
             };
 
             ApplyFormValues(build, model);
@@ -125,9 +135,21 @@ namespace RiftBuilds.Services
                 .FirstOrDefaultAsync();
         }
 
-        public async Task<BuildFormViewModel?> GetForEditAsync(int id)
+        public async Task<bool> CanManageAsync(
+            int id,
+            string userId,
+            bool isAdministrator)
         {
-            var model = await context.Builds
+            return await GetManageableBuilds(userId, isAdministrator)
+                .AnyAsync(build => build.Id == id);
+        }
+
+        public async Task<BuildFormViewModel?> GetForEditAsync(
+            int id,
+            string userId,
+            bool isAdministrator)
+        {
+            var model = await GetManageableBuilds(userId, isAdministrator)
                 .AsNoTracking()
                 .Where(build => build.Id == id)
                 .Select(build => new BuildFormViewModel
@@ -155,9 +177,11 @@ namespace RiftBuilds.Services
 
         public async Task<bool> UpdateAsync(
             int id,
-            BuildFormViewModel model)
+            BuildFormViewModel model,
+            string userId,
+            bool isAdministrator)
         {
-            var build = await context.Builds
+            var build = await GetManageableBuilds(userId, isAdministrator)
                 .Include(build => build.BuildItems)
                 .FirstOrDefaultAsync(build => build.Id == id);
 
@@ -201,9 +225,12 @@ namespace RiftBuilds.Services
             return true;
         }
 
-        public async Task<bool> DeleteAsync(int id)
+        public async Task<bool> DeleteAsync(
+            int id,
+            string userId,
+            bool isAdministrator)
         {
-            var build = await context.Builds
+            var build = await GetManageableBuilds(userId, isAdministrator)
                 .Include(build => build.BuildItems)
                 .FirstOrDefaultAsync(build => build.Id == id);
 
@@ -220,9 +247,23 @@ namespace RiftBuilds.Services
             return true;
         }
 
+        private IQueryable<Build> GetManageableBuilds(
+            string userId,
+            bool isAdministrator)
+        {
+            if (string.IsNullOrWhiteSpace(userId))
+            {
+                return context.Builds.Where(build => false);
+            }
+
+            return context.Builds
+                .Where(build =>
+                    isAdministrator || build.AuthorId == userId);
+        }
+
         private static void ApplyFormValues(
-    Build build,
-    BuildFormViewModel model)
+            Build build,
+            BuildFormViewModel model)
         {
             build.Title = model.Title.Trim();
             build.Description = model.Description?.Trim();

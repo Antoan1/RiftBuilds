@@ -23,14 +23,19 @@
     <div class="col-md-7">
         <h2>@Model.ChampionName</h2>
 
-        <p><strong>Position:</strong> @Model.Position</p>
+        <p>
+            <strong>Position:</strong> @Model.Position
+        </p>
 
         <p>
             <strong>Created:</strong>
             @Model.CreatedOn.ToString("dd.MM.yyyy HH:mm") UTC
         </p>
 
-        <p class="text-break">@Model.Description</p>
+        @if (!string.IsNullOrWhiteSpace(Model.Description))
+        {
+            <p class="text-break">@Model.Description</p>
+        }
 
         <p>
             <strong>Total item cost:</strong> @Model.TotalPrice gold
@@ -68,22 +73,27 @@ else
     </div>
 }
 
-<a asp-controller="Builds"
-   asp-action="Edit"
-   asp-route-id="@Model.Id"
-   class="btn btn-primary mt-4">
-    Edit
-</a>
+<div class="d-flex flex-wrap gap-2 mt-4">
+    @if (ViewData["CanManage"] is true)
+    {
+        <a asp-controller="Builds"
+           asp-action="Edit"
+           asp-route-id="@Model.Id"
+           class="btn btn-primary">
+            Edit
+        </a>
 
-<a asp-controller="Builds"
-   asp-action="Delete"
-   asp-route-id="@Model.Id"
-   class="btn btn-danger mt-4">
-    Delete
-</a>
+        <a asp-controller="Builds"
+           asp-action="Delete"
+           asp-route-id="@Model.Id"
+           class="btn btn-danger">
+            Delete
+        </a>
+    }
 
-<a asp-controller="Builds"
-   asp-action="Index"
-   class="btn btn-secondary mt-4">
-    Back to Builds
-</a>
+    <a asp-controller="Builds"
+       asp-action="Index"
+       class="btn btn-secondary">
+        Back to Builds
+    </a>
+</div>

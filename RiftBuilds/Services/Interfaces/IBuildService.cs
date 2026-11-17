@@ -4,22 +4,39 @@ namespace RiftBuilds.Services.Interfaces
 {
     public interface IBuildService
     {
-        Task PopulateOptionsAsync (BuildFormViewModel model);
+        Task PopulateOptionsAsync(BuildFormViewModel model);
 
         Task<bool> ChampionExistsAsync(int championId);
 
         Task<bool> ItemsExistAsync(int[] itemIds);
 
-        Task<int> CreateAsync(BuildFormViewModel model);
+        Task<int> CreateAsync(
+            BuildFormViewModel model,
+            string userId);
 
         Task<IEnumerable<BuildListViewModel>> GetAllAsync();
 
         Task<BuildDetailsViewModel?> GetDetailsAsync(int id);
 
-        Task<BuildFormViewModel?> GetForEditAsync(int id);
+        Task<bool> CanManageAsync(
+            int id,
+            string userId,
+            bool isAdministrator);
 
-        Task<bool> UpdateAsync(int id, BuildFormViewModel model);
+        Task<BuildFormViewModel?> GetForEditAsync(
+            int id,
+            string userId,
+            bool isAdministrator);
 
-        Task<bool> DeleteAsync(int id);
+        Task<bool> UpdateAsync(
+            int id,
+            BuildFormViewModel model,
+            string userId,
+            bool isAdministrator);
+
+        Task<bool> DeleteAsync(
+            int id,
+            string userId,
+            bool isAdministrator);
     }
 }

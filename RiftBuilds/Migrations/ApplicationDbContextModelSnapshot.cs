@@ -228,6 +228,9 @@ namespace RiftBuilds.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("AuthorId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<int>("ChampionId")
                         .HasColumnType("int");
 
@@ -247,6 +250,8 @@ namespace RiftBuilds.Migrations
                         .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AuthorId");
 
                     b.HasIndex("ChampionId");
 
@@ -842,11 +847,18 @@ namespace RiftBuilds.Migrations
 
             modelBuilder.Entity("RiftBuilds.Models.Build", b =>
                 {
+                    b.HasOne("RiftBuilds.Models.ApplicationUser", "Author")
+                        .WithMany()
+                        .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("RiftBuilds.Models.Champion", "Champion")
                         .WithMany("Builds")
                         .HasForeignKey("ChampionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Author");
 
                     b.Navigation("Champion");
                 });

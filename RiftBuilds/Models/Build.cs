@@ -23,6 +23,10 @@ namespace RiftBuilds.Models
 
         public Champion Champion { get; set; } = null!;
 
+        public string? AuthorId { get; set; }
+
+        public ApplicationUser? Author { get; set; }
+
         public ICollection<BuildItem> BuildItems { get; set; }
             = new List<BuildItem>();
     }

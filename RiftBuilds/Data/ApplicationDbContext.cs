@@ -27,6 +27,12 @@ namespace RiftBuilds.Data
             modelBuilder.Entity<BuildItem>()
                 .HasKey(bi => new { bi.BuildId, bi.ItemId });
 
+            modelBuilder.Entity<Build>()
+             .HasOne(build => build.Author)
+             .WithMany()
+             .HasForeignKey(build => build.AuthorId)
+             .OnDelete(DeleteBehavior.Restrict);
+
             modelBuilder.Entity<Champion>().HasData(
     new Champion
     {
