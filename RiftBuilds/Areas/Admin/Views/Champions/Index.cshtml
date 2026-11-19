@@ -1,0 +1,66 @@
+﻿@model IEnumerable<RiftBuilds.Models.Champion>
+
+@{
+    ViewData["Title"] = "Manage Champions";
+}
+
+<h1 class="mb-4">Manage Champions</h1>
+
+@if (TempData["SuccessMessage"] is string message)
+{
+    <div class="alert alert-success" role="alert">
+        @message
+    </div>
+}
+
+<div class="d-flex flex-wrap gap-2 mb-4">
+    <a asp-area="Admin"
+       asp-controller="Champions"
+       asp-action="Create"
+       class="btn btn-primary">
+        Add Champion
+    </a>
+
+    <a asp-area="Admin"
+       asp-controller="Dashboard"
+       asp-action="Index"
+       class="btn btn-secondary">
+        Back to Dashboard
+    </a>
+</div>
+
+@if (!Model.Any())
+{
+    <p>No champions have been added yet.</p>
+}
+else
+{
+    <div class="row g-4">
+        @foreach (var champion in Model)
+        {
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="card h-100">
+                    <img src="@champion.ImageUrl"
+                         alt="@champion.Name"
+                         class="card-img-top" />
+
+                    <div class="card-body">
+                        <h2 class="card-title h4">@champion.Name</h2>
+
+                        <p class="card-text text-break">
+                            @champion.Description
+                        </p>
+
+                        <a asp-area="Admin"
+                           asp-controller="Champions"
+                           asp-action="Edit"
+                           asp-route-id="@champion.Id"
+                           class="btn btn-primary">
+                            Edit
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
