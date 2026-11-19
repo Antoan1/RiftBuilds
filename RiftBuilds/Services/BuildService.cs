@@ -107,6 +107,30 @@ namespace RiftBuilds.Services
                 .ToListAsync();
         }
 
+        public async Task<IEnumerable<BuildListViewModel>> GetMineAsync(
+    string userId)
+        {
+            if (string.IsNullOrWhiteSpace(userId))
+            {
+                return Array.Empty<BuildListViewModel>();
+            }
+
+            return await context.Builds
+                .AsNoTracking()
+                .Where(build => build.AuthorId == userId)
+                .OrderByDescending(build => build.CreatedOn)
+                .ThenByDescending(build => build.Id)
+                .Select(build => new BuildListViewModel
+                {
+                    Id = build.Id,
+                    Title = build.Title,
+                    ChampionName = build.Champion.Name,
+                    ChampionImageUrl = build.Champion.ImageUrl,
+                    Position = build.Position
+                })
+                .ToListAsync();
+        }
+
         public async Task<BuildDetailsViewModel?> GetDetailsAsync(int id)
         {
             return await context.Builds

@@ -26,6 +26,22 @@ namespace RiftBuilds.Controllers
         }
 
         [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> Mine()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (string.IsNullOrWhiteSpace(userId))
+            {
+                return Challenge();
+            }
+
+            var builds = await buildService.GetMineAsync(userId);
+
+            return View(builds);
+        }
+
+        [HttpGet]
         [AllowAnonymous]
         public async Task<IActionResult> Details(int id)
         {

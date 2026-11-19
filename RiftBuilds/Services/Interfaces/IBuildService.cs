@@ -16,6 +16,8 @@ namespace RiftBuilds.Services.Interfaces
 
         Task<IEnumerable<BuildListViewModel>> GetAllAsync();
 
+        Task<IEnumerable<BuildListViewModel>> GetMineAsync(string userId);
+
         Task<BuildDetailsViewModel?> GetDetailsAsync(int id);
 
         Task<bool> CanManageAsync(

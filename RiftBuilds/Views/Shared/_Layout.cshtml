@@ -55,6 +55,19 @@
                                asp-controller="Builds"
                                asp-action="Index">Builds</a>
                         </li>
+
+                        @if (User.Identity?.IsAuthenticated == true)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link"
+                                   asp-area=""
+                                   asp-controller="Builds"
+                                   asp-action="Mine">
+                                    My Builds
+                                </a>
+                            </li>
+                        }
+
                         <li class="nav-item">
                             <a class="nav-link"
                                asp-area=""

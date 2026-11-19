@@ -1,0 +1,69 @@
+﻿@model IEnumerable<RiftBuilds.ViewModels.Builds.BuildListViewModel>
+
+@{
+    ViewData["Title"] = "My Builds";
+}
+
+<h1 class="mb-4">My Builds</h1>
+
+@if (TempData["SuccessMessage"] is string message)
+{
+    <div class="alert alert-success" role="alert">
+        @message
+    </div>
+}
+
+<div class="d-flex flex-wrap gap-2 mb-4">
+    <a asp-controller="Builds"
+       asp-action="Create"
+       class="btn btn-primary">
+        Create Build
+    </a>
+
+    <a asp-controller="Builds"
+       asp-action="Index"
+       class="btn btn-secondary">
+        All Builds
+    </a>
+</div>
+
+@if (!Model.Any())
+{
+    <p>You haven't created any builds yet. Create your first build!</p>
+}
+else
+{
+    <div class="row g-4">
+        @foreach (var build in Model)
+        {
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="card h-100">
+                    <img src="@build.ChampionImageUrl"
+                         alt="@build.ChampionName"
+                         class="card-img-top" />
+
+                    <div class="card-body">
+                        <h2 class="card-title h4 text-break">
+                            @build.Title
+                        </h2>
+
+                        <p class="card-text">
+                            Champion: @build.ChampionName
+                        </p>
+
+                        <p class="card-text">
+                            Position: @build.Position
+                        </p>
+
+                        <a asp-controller="Builds"
+                           asp-action="Details"
+                           asp-route-id="@build.Id"
+                           class="btn btn-primary">
+                            Details
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
