@@ -167,5 +167,14 @@ namespace RiftBuilds.Controllers
 
             return RedirectToAction("Index", "Home");
         }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult AccessDenied()
+        {
+            Response.StatusCode = StatusCodes.Status403Forbidden;
+
+            return View();
+        }
     }
 }
