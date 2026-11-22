@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using RiftBuilds.Models.Enums;
 using RiftBuilds.Services.Interfaces;
 using RiftBuilds.ViewModels.Items;
 
@@ -105,6 +106,52 @@ namespace RiftBuilds.Areas.Admin.Controllers
             }
 
             TempData["SuccessMessage"] = "Item updated successfully.";
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var model = await itemService.GetForDeleteAsync(id);
+
+            if (model == null)
+            {
+                return NotFound();
+            }
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var result = await itemService.DeleteAsync(id);
+
+            if (result == ItemDeleteResult.NotFound)
+            {
+                return NotFound();
+            }
+
+            if (result == ItemDeleteResult.InUse)
+            {
+                var model = await itemService.GetForDeleteAsync(id);
+
+                if (model == null)
+                {
+                    return NotFound();
+                }
+
+                ModelState.AddModelError(
+                    string.Empty,
+                    "This item cannot be deleted because it is used in a build.");
+
+                return View("Delete", model);
+            }
+
+            TempData["SuccessMessage"] = "Item deleted successfully.";
 
             return RedirectToAction(nameof(Index));
         }

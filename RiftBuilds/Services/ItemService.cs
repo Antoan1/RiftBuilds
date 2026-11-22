@@ -1,6 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Data;
+using Microsoft.EntityFrameworkCore;
 using RiftBuilds.Data;
 using RiftBuilds.Models;
+using RiftBuilds.Models.Enums;
 using RiftBuilds.Services.Interfaces;
 using RiftBuilds.ViewModels.Items;
 
@@ -80,6 +82,51 @@ namespace RiftBuilds.Services
             await context.SaveChangesAsync();
 
             return true;
+        }
+
+        public async Task<ItemDeleteViewModel?> GetForDeleteAsync(int id)
+        {
+            return await context.Items
+                .AsNoTracking()
+                .Where(item => item.Id == id)
+                .Select(item => new ItemDeleteViewModel
+                {
+                    Id = item.Id,
+                    Name = item.Name,
+                    ImageUrl = item.ImageUrl,
+                    Price = item.Price,
+                    BuildsCount = item.BuildItems.Count
+                })
+                .FirstOrDefaultAsync();
+        }
+
+        public async Task<ItemDeleteResult> DeleteAsync(int id)
+        {
+            await using var transaction = await context.Database
+                .BeginTransactionAsync(IsolationLevel.Serializable);
+
+            var item = await context.Items
+                .FirstOrDefaultAsync(item => item.Id == id);
+
+            if (item == null)
+            {
+                return ItemDeleteResult.NotFound;
+            }
+
+            var isUsedInBuild = await context.BuildItems
+                .AnyAsync(buildItem => buildItem.ItemId == id);
+
+            if (isUsedInBuild)
+            {
+                return ItemDeleteResult.InUse;
+            }
+
+            context.Items.Remove(item);
+
+            await context.SaveChangesAsync();
+            await transaction.CommitAsync();
+
+            return ItemDeleteResult.Success;
         }
 
         private static void ApplyFormValues(

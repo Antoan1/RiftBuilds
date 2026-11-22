@@ -1,4 +1,5 @@
 ﻿using RiftBuilds.Models;
+using RiftBuilds.Models.Enums;
 using RiftBuilds.ViewModels.Items;
 
 namespace RiftBuilds.Services.Interfaces
@@ -18,5 +19,9 @@ namespace RiftBuilds.Services.Interfaces
         Task<bool> UpdateAsync(
             int id,
             ItemFormViewModel model);
+
+        Task<ItemDeleteViewModel?> GetForDeleteAsync(int id);
+
+        Task<ItemDeleteResult> DeleteAsync(int id);
     }
 }

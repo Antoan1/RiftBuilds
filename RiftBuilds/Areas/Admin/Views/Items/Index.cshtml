@@ -57,13 +57,23 @@ else
                             <strong>Price:</strong> @item.Price gold
                         </p>
 
-                        <a asp-area="Admin"
-                           asp-controller="Items"
-                           asp-action="Edit"
-                           asp-route-id="@item.Id"
-                           class="btn btn-primary">
-                            Edit
-                        </a>
+                        <div class="d-flex flex-wrap gap-2">
+                            <a asp-area="Admin"
+                               asp-controller="Items"
+                               asp-action="Edit"
+                               asp-route-id="@item.Id"
+                               class="btn btn-primary">
+                                Edit
+                            </a>
+
+                            <a asp-area="Admin"
+                               asp-controller="Items"
+                               asp-action="Delete"
+                               asp-route-id="@item.Id"
+                               class="btn btn-danger">
+                                Delete
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
