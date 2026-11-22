@@ -1,4 +1,5 @@
 ﻿using RiftBuilds.Models;
+using RiftBuilds.Models.Enums;
 using RiftBuilds.ViewModels.Champions;
 
 namespace RiftBuilds.Services.Interfaces
@@ -18,5 +19,9 @@ namespace RiftBuilds.Services.Interfaces
         Task<bool> UpdateAsync(
             int id,
             ChampionFormViewModel model);
+
+        Task<ChampionDeleteViewModel?> GetForDeleteAsync(int id);
+
+        Task<ChampionDeleteResult> DeleteAsync(int id);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using RiftBuilds.Models.Enums;
 using RiftBuilds.Services.Interfaces;
 using RiftBuilds.ViewModels.Champions;
 
@@ -106,6 +107,52 @@ namespace RiftBuilds.Areas.Admin.Controllers
             }
 
             TempData["SuccessMessage"] = "Champion updated successfully.";
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var model = await championService.GetForDeleteAsync(id);
+
+            if (model == null)
+            {
+                return NotFound();
+            }
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var result = await championService.DeleteAsync(id);
+
+            if (result == ChampionDeleteResult.NotFound)
+            {
+                return NotFound();
+            }
+
+            if (result == ChampionDeleteResult.InUse)
+            {
+                var model = await championService.GetForDeleteAsync(id);
+
+                if (model == null)
+                {
+                    return NotFound();
+                }
+
+                ModelState.AddModelError(
+                    string.Empty,
+                    "This champion cannot be deleted because it is used in a build.");
+
+                return View("Delete", model);
+            }
+
+            TempData["SuccessMessage"] = "Champion deleted successfully.";
 
             return RedirectToAction(nameof(Index));
         }

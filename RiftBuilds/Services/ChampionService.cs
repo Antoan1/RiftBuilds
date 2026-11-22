@@ -3,6 +3,8 @@ using RiftBuilds.Data;
 using RiftBuilds.Models;
 using RiftBuilds.Services.Interfaces;
 using RiftBuilds.ViewModels.Champions;
+using System.Data;
+using RiftBuilds.Models.Enums;
 
 namespace RiftBuilds.Services
 {
@@ -80,6 +82,50 @@ namespace RiftBuilds.Services
             await context.SaveChangesAsync();
 
             return true;
+        }
+
+        public async Task<ChampionDeleteViewModel?> GetForDeleteAsync(int id)
+        {
+            return await context.Champions
+                .AsNoTracking()
+                .Where(champion => champion.Id == id)
+                .Select(champion => new ChampionDeleteViewModel
+                {
+                    Id = champion.Id,
+                    Name = champion.Name,
+                    ImageUrl = champion.ImageUrl,
+                    BuildsCount = champion.Builds.Count
+                })
+                .FirstOrDefaultAsync();
+        }
+
+        public async Task<ChampionDeleteResult> DeleteAsync(int id)
+        {
+            await using var transaction = await context.Database
+                .BeginTransactionAsync(IsolationLevel.Serializable);
+
+            var champion = await context.Champions
+                .FirstOrDefaultAsync(champion => champion.Id == id);
+
+            if (champion == null)
+            {
+                return ChampionDeleteResult.NotFound;
+            }
+
+            var isUsedInBuild = await context.Builds
+                .AnyAsync(build => build.ChampionId == id);
+
+            if (isUsedInBuild)
+            {
+                return ChampionDeleteResult.InUse;
+            }
+
+            context.Champions.Remove(champion);
+
+            await context.SaveChangesAsync();
+            await transaction.CommitAsync();
+
+            return ChampionDeleteResult.Success;
         }
 
         private static void ApplyFormValues(
