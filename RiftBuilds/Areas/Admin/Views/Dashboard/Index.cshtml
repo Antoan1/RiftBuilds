@@ -9,8 +9,7 @@
         <h2 class="h4">Welcome, Administrator!</h2>
 
         <p class="text-muted">
-            Manage the champions available in RiftBuilds.
-            Item management will be added soon.
+            Manage the champions and items available in RiftBuilds.
         </p>
 
         <div class="d-flex flex-wrap gap-2">
@@ -19,6 +18,13 @@
                asp-action="Index"
                class="btn btn-primary">
                 Manage Champions
+            </a>
+
+            <a asp-area="Admin"
+               asp-controller="Items"
+               asp-action="Index"
+               class="btn btn-primary">
+                Manage Items
             </a>
 
             <a asp-area=""
