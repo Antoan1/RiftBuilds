@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using RiftBuilds.Services.Interfaces;
+using RiftBuilds.ViewModels.Champions;
 
 namespace RiftBuilds.Controllers
 {
@@ -12,11 +14,20 @@ namespace RiftBuilds.Controllers
             this.championService = championService;
         }
 
-        public async Task<IActionResult> Index()
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> Index(
+            [Bind("SearchTerm,CurrentPage")]
+            ChampionQueryViewModel model)
         {
-            var champions = await championService.GetAllAsync();
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("Invalid search or page parameters.");
+            }
 
-            return View(champions);
+            await championService.GetFilteredAsync(model);
+
+            return View(model);
         }
     }
 }

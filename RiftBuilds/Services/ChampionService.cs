@@ -25,6 +25,35 @@ namespace RiftBuilds.Services
                 .ToListAsync();
         }
 
+        public async Task GetFilteredAsync(ChampionQueryViewModel model)
+        {
+            var query = context.Champions.AsNoTracking();
+
+            model.SearchTerm = model.SearchTerm?.Trim();
+
+            if (!string.IsNullOrWhiteSpace(model.SearchTerm))
+            {
+                query = query.Where(champion =>
+                    champion.Name.Contains(model.SearchTerm));
+            }
+
+            model.TotalChampions = await query.CountAsync();
+
+            var lastPage = Math.Max(1, model.TotalPages);
+
+            model.CurrentPage = Math.Clamp(
+                model.CurrentPage,
+                1,
+                lastPage);
+
+            model.Champions = await query
+                .OrderBy(champion => champion.Name)
+                .ThenBy(champion => champion.Id)
+                .Skip((model.CurrentPage - 1) * ChampionQueryViewModel.PageSize)
+                .Take(ChampionQueryViewModel.PageSize)
+                .ToListAsync();
+        }
+
         public async Task<ChampionFormViewModel?> GetForEditAsync(int id)
         {
             return await context.Champions

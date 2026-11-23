@@ -8,6 +8,8 @@ namespace RiftBuilds.Services.Interfaces
     {
         Task<IEnumerable<Champion>> GetAllAsync();
 
+        Task GetFilteredAsync(ChampionQueryViewModel model);
+
         Task<ChampionFormViewModel?> GetForEditAsync(int id);
 
         Task<bool> NameExistsAsync(

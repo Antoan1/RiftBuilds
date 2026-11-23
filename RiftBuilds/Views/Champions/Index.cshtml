@@ -1,4 +1,4 @@
-﻿@model IEnumerable<RiftBuilds.Models.Champion>
+﻿@model RiftBuilds.ViewModels.Champions.ChampionQueryViewModel
 
 @{
     ViewData["Title"] = "Champions";
@@ -6,14 +6,47 @@
 
 <h1 class="mb-4">Champions</h1>
 
-@if (!Model.Any())
+<form asp-area=""
+      asp-controller="Champions"
+      asp-action="Index"
+      method="get"
+      class="card mb-4">
+
+    <div class="card-body">
+        <label asp-for="SearchTerm" class="form-label"></label>
+
+        <input asp-for="SearchTerm"
+               class="form-control"
+               placeholder="Enter a champion name"
+               maxlength="50" />
+
+        <div class="d-flex flex-wrap gap-2 mt-3">
+            <button type="submit" class="btn btn-primary">
+                Search
+            </button>
+
+            <a asp-area=""
+               asp-controller="Champions"
+               asp-action="Index"
+               class="btn btn-secondary">
+                Clear Search
+            </a>
+        </div>
+    </div>
+</form>
+
+<p class="text-muted">
+    Results: @Model.TotalChampions
+</p>
+
+@if (!Model.Champions.Any())
 {
-    <p>No champions available.</p>
+    <p>No champions found. Try changing or clearing your search.</p>
 }
 else
 {
     <div class="row g-4">
-        @foreach (var champion in Model)
+        @foreach (var champion in Model.Champions)
         {
             <div class="col-12 col-md-6 col-lg-4">
                 <div class="card h-100">
@@ -23,10 +56,50 @@ else
 
                     <div class="card-body">
                         <h2 class="card-title h4">@champion.Name</h2>
-                        <p class="card-text">@champion.Description</p>
+
+                        <p class="card-text text-break">
+                            @champion.Description
+                        </p>
                     </div>
                 </div>
             </div>
         }
     </div>
+
+    @if (Model.TotalPages > 1)
+    {
+        <nav aria-label="Champion pages" class="mt-4">
+            <div class="d-flex flex-wrap align-items-center gap-3">
+                @if (Model.CurrentPage > 1)
+                {
+                    <a asp-area=""
+                       asp-controller="Champions"
+                       asp-action="Index"
+                       asp-route-SearchTerm="@Model.SearchTerm"
+                       asp-route-CurrentPage="@(Model.CurrentPage - 1)"
+                       class="btn btn-secondary"
+                       rel="prev">
+                        Previous
+                    </a>
+                }
+
+                <span>
+                    Page @Model.CurrentPage of @Model.TotalPages
+                </span>
+
+                @if (Model.CurrentPage < Model.TotalPages)
+                {
+                    <a asp-area=""
+                       asp-controller="Champions"
+                       asp-action="Index"
+                       asp-route-SearchTerm="@Model.SearchTerm"
+                       asp-route-CurrentPage="@(Model.CurrentPage + 1)"
+                       class="btn btn-secondary"
+                       rel="next">
+                        Next
+                    </a>
+                }
+            </div>
+        </nav>
+    }
 }
