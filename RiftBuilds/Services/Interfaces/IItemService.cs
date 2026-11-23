@@ -8,6 +8,7 @@ namespace RiftBuilds.Services.Interfaces
     {
         Task<IEnumerable<Item>> GetAllAsync();
 
+        Task GetFilteredAsync(ItemQueryViewModel model);
         Task<ItemFormViewModel?> GetForEditAsync(int id);
 
         Task<bool> NameExistsAsync(

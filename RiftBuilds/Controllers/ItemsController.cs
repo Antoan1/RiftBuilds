@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using RiftBuilds.Services.Interfaces;
+using RiftBuilds.ViewModels.Items;
 
 namespace RiftBuilds.Controllers
 {
@@ -12,11 +14,20 @@ namespace RiftBuilds.Controllers
             this.itemService = itemService;
         }
 
-        public async Task<IActionResult> Index()
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> Index(
+            [Bind("SearchTerm,MinPrice,MaxPrice,CurrentPage")]
+            ItemQueryViewModel model)
         {
-            var items = await itemService.GetAllAsync();
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
 
-            return View(items);
+            await itemService.GetFilteredAsync(model);
+
+            return View(model);
         }
     }
 }

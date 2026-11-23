@@ -25,6 +25,47 @@ namespace RiftBuilds.Services
                 .ToListAsync();
         }
 
+        public async Task GetFilteredAsync(ItemQueryViewModel model)
+        {
+            var query = context.Items.AsNoTracking();
+
+            model.SearchTerm = model.SearchTerm?.Trim();
+
+            if (!string.IsNullOrWhiteSpace(model.SearchTerm))
+            {
+                query = query.Where(item =>
+                    item.Name.Contains(model.SearchTerm));
+            }
+
+            if (model.MinPrice.HasValue)
+            {
+                query = query.Where(item =>
+                    item.Price >= model.MinPrice.Value);
+            }
+
+            if (model.MaxPrice.HasValue)
+            {
+                query = query.Where(item =>
+                    item.Price <= model.MaxPrice.Value);
+            }
+
+            model.TotalItems = await query.CountAsync();
+
+            var lastPage = Math.Max(1, model.TotalPages);
+
+            model.CurrentPage = Math.Clamp(
+                model.CurrentPage,
+                1,
+                lastPage);
+
+            model.Items = await query
+                .OrderBy(item => item.Name)
+                .ThenBy(item => item.Id)
+                .Skip((model.CurrentPage - 1) * ItemQueryViewModel.PageSize)
+                .Take(ItemQueryViewModel.PageSize)
+                .ToListAsync();
+        }
+
         public async Task<ItemFormViewModel?> GetForEditAsync(int id)
         {
             return await context.Items
