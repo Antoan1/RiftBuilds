@@ -18,11 +18,18 @@ namespace RiftBuilds.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(
+    [Bind("SearchTerm,ChampionId,Position,CurrentPage")]
+    BuildQueryViewModel model)
         {
-            var builds = await buildService.GetAllAsync();
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("Invalid search or filter parameters.");
+            }
 
-            return View(builds);
+            await buildService.GetFilteredAsync(model);
+
+            return View(model);
         }
 
         [HttpGet]

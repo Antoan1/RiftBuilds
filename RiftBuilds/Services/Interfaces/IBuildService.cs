@@ -16,6 +16,8 @@ namespace RiftBuilds.Services.Interfaces
 
         Task<IEnumerable<BuildListViewModel>> GetAllAsync();
 
+        Task GetFilteredAsync(BuildQueryViewModel model);
+
         Task<IEnumerable<BuildListViewModel>> GetMineAsync(string userId);
 
         Task<BuildDetailsViewModel?> GetDetailsAsync(int id);
@@ -40,5 +42,7 @@ namespace RiftBuilds.Services.Interfaces
             int id,
             string userId,
             bool isAdministrator);
+
+       
     }
 }

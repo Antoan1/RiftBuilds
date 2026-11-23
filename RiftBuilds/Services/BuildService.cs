@@ -107,8 +107,67 @@ namespace RiftBuilds.Services
                 .ToListAsync();
         }
 
+        public async Task GetFilteredAsync(BuildQueryViewModel model)
+        {
+            model.Champions = await context.Champions
+                .AsNoTracking()
+                .OrderBy(champion => champion.Name)
+                .Select(champion => new SelectListItem
+                {
+                    Value = champion.Id.ToString(),
+                    Text = champion.Name
+                })
+                .ToListAsync();
+
+            var query = context.Builds.AsNoTracking();
+
+            model.SearchTerm = model.SearchTerm?.Trim();
+
+            if (!string.IsNullOrWhiteSpace(model.SearchTerm))
+            {
+                query = query.Where(build =>
+                    build.Title.Contains(model.SearchTerm));
+            }
+
+            if (model.ChampionId.HasValue)
+            {
+                query = query.Where(build =>
+                    build.ChampionId == model.ChampionId.Value);
+            }
+
+            if (model.Position.HasValue)
+            {
+                query = query.Where(build =>
+                    build.Position == model.Position.Value);
+            }
+
+            model.TotalBuilds = await query.CountAsync();
+
+            var lastPage = Math.Max(1, model.TotalPages);
+
+            model.CurrentPage = Math.Clamp(
+                model.CurrentPage,
+                1,
+                lastPage);
+
+            model.Builds = await query
+                .OrderByDescending(build => build.CreatedOn)
+                .ThenByDescending(build => build.Id)
+                .Skip((model.CurrentPage - 1) * BuildQueryViewModel.PageSize)
+                .Take(BuildQueryViewModel.PageSize)
+                .Select(build => new BuildListViewModel
+                {
+                    Id = build.Id,
+                    Title = build.Title,
+                    ChampionName = build.Champion.Name,
+                    ChampionImageUrl = build.Champion.ImageUrl,
+                    Position = build.Position
+                })
+                .ToListAsync();
+        }
+
         public async Task<IEnumerable<BuildListViewModel>> GetMineAsync(
-    string userId)
+            string userId)
         {
             if (string.IsNullOrWhiteSpace(userId))
             {

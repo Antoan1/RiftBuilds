@@ -1,4 +1,5 @@
-﻿@model IEnumerable<RiftBuilds.ViewModels.Builds.BuildListViewModel>
+﻿@model RiftBuilds.ViewModels.Builds.BuildQueryViewModel
+@using RiftBuilds.Models.Enums
 
 @{
     ViewData["Title"] = "Builds";
@@ -13,20 +14,75 @@
     </div>
 }
 
-<a asp-controller="Builds"
+<a asp-area=""
+   asp-controller="Builds"
    asp-action="Create"
    class="btn btn-primary mb-4">
     Create Build
 </a>
 
-@if (!Model.Any())
+<form asp-area=""
+      asp-controller="Builds"
+      asp-action="Index"
+      method="get"
+      class="card mb-4">
+
+    <div class="card-body">
+        <div class="row g-3">
+            <div class="col-12 col-lg-6">
+                <label asp-for="SearchTerm" class="form-label"></label>
+                <input asp-for="SearchTerm"
+                       class="form-control"
+                       placeholder="Enter a build title"
+                       maxlength="100" />
+            </div>
+
+            <div class="col-12 col-md-6 col-lg-3">
+                <label asp-for="ChampionId" class="form-label"></label>
+                <select asp-for="ChampionId"
+                        asp-items="Model.Champions"
+                        class="form-select">
+                    <option value="">All champions</option>
+                </select>
+            </div>
+
+            <div class="col-12 col-md-6 col-lg-3">
+                <label asp-for="Position" class="form-label"></label>
+                <select asp-for="Position"
+                        asp-items="Html.GetEnumSelectList<Position>()"
+                        class="form-select">
+                    <option value="">All positions</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="d-flex flex-wrap gap-2 mt-3">
+            <button type="submit" class="btn btn-primary">
+                Search
+            </button>
+
+            <a asp-area=""
+               asp-controller="Builds"
+               asp-action="Index"
+               class="btn btn-secondary">
+                Clear Filters
+            </a>
+        </div>
+    </div>
+</form>
+
+<p class="text-muted">
+    Results: @Model.TotalBuilds
+</p>
+
+@if (!Model.Builds.Any())
 {
-    <p>No builds yet. Create your first build!</p>
+    <p>No builds match your search. Try changing or clearing the filters.</p>
 }
 else
 {
     <div class="row g-4">
-        @foreach (var build in Model)
+        @foreach (var build in Model.Builds)
         {
             <div class="col-12 col-md-6 col-lg-4">
                 <div class="card h-100">
@@ -35,7 +91,9 @@ else
                          alt="@build.ChampionName" />
 
                     <div class="card-body">
-                        <h2 class="card-title h4">@build.Title</h2>
+                        <h2 class="card-title h4 text-break">
+                            @build.Title
+                        </h2>
 
                         <p class="card-text">
                             Champion: @build.ChampionName
@@ -45,7 +103,8 @@ else
                             Position: @build.Position
                         </p>
 
-                        <a asp-controller="Builds"
+                        <a asp-area=""
+                           asp-controller="Builds"
                            asp-action="Details"
                            asp-route-id="@build.Id"
                            class="btn btn-primary">
@@ -56,4 +115,45 @@ else
             </div>
         }
     </div>
+
+    @if (Model.TotalPages > 1)
+    {
+        <nav aria-label="Build pages" class="mt-4">
+            <div class="d-flex flex-wrap align-items-center gap-3">
+                @if (Model.CurrentPage > 1)
+                {
+                    <a asp-area=""
+                       asp-controller="Builds"
+                       asp-action="Index"
+                       asp-route-SearchTerm="@Model.SearchTerm"
+                       asp-route-ChampionId="@Model.ChampionId"
+                       asp-route-Position="@Model.Position"
+                       asp-route-CurrentPage="@(Model.CurrentPage - 1)"
+                       class="btn btn-secondary"
+                       rel="prev">
+                        Previous
+                    </a>
+                }
+
+                <span>
+                    Page @Model.CurrentPage of @Model.TotalPages
+                </span>
+
+                @if (Model.CurrentPage < Model.TotalPages)
+                {
+                    <a asp-area=""
+                       asp-controller="Builds"
+                       asp-action="Index"
+                       asp-route-SearchTerm="@Model.SearchTerm"
+                       asp-route-ChampionId="@Model.ChampionId"
+                       asp-route-Position="@Model.Position"
+                       asp-route-CurrentPage="@(Model.CurrentPage + 1)"
+                       class="btn btn-secondary"
+                       rel="next">
+                        Next
+                    </a>
+                }
+            </div>
+        </nav>
+    }
 }
