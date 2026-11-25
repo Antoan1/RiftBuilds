@@ -169,6 +169,213 @@ namespace RiftBuilds.Tests.Services
                 Is.EqualTo(ChampionDeleteResult.NotFound));
         }
 
+        [Test]
+        public async Task NameExistsAsync_IgnoresCaseAndSurroundingSpaces()
+        {
+            await AddChampionAsync();
+
+            var result = await service.NameExistsAsync("  test CHAMPION  ");
+
+            Assert.That(result, Is.True);
+        }
+
+        [Test]
+        public async Task NameExistsAsync_ExcludesCurrentChampion()
+        {
+            var champion = await AddChampionAsync();
+
+            var result = await service.NameExistsAsync(
+                champion.Name,
+                champion.Id);
+
+            Assert.That(result, Is.False);
+        }
+
+        [Test]
+        public async Task NameExistsAsync_FindsAnotherChampionDespiteExcludedId()
+        {
+            var champion = await AddChampionAsync();
+
+            var otherChampion = new Champion
+            {
+                Name = "Another Test Champion",
+                Description = "Another description.",
+                ImageUrl = "/images/champions/another.jpg"
+            };
+
+            database.Context.Champions.Add(otherChampion);
+            await database.Context.SaveChangesAsync();
+
+            var result = await service.NameExistsAsync(
+                champion.Name,
+                otherChampion.Id);
+
+            Assert.That(result, Is.True);
+        }
+
+        [Test]
+        public async Task NameExistsAsync_ReturnsFalseForUnknownName()
+        {
+            var result = await service.NameExistsAsync(
+                "Nonexistent Champion 987654");
+
+            Assert.That(result, Is.False);
+        }
+
+        [Test]
+        public async Task GetForEditAsync_ReturnsExistingChampionValues()
+        {
+            var champion = await AddChampionAsync();
+
+            var model = await service.GetForEditAsync(champion.Id);
+
+            Assert.That(model, Is.Not.Null);
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(model!.Name, Is.EqualTo(champion.Name));
+                Assert.That(model.Description, Is.EqualTo(champion.Description));
+                Assert.That(model.ImageUrl, Is.EqualTo(champion.ImageUrl));
+            });
+        }
+
+        [Test]
+        public async Task GetForEditAsync_ReturnsNullForMissingChampion()
+        {
+            var model = await service.GetForEditAsync(-1);
+
+            Assert.That(model, Is.Null);
+        }
+
+        [Test]
+        public async Task GetFilteredAsync_FindsChampionByPartOfName()
+        {
+            var champion = await AddChampionAsync();
+
+            var model = new ChampionQueryViewModel
+            {
+                SearchTerm = "  est Champ  "
+            };
+
+            await service.GetFilteredAsync(model);
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(model.SearchTerm, Is.EqualTo("est Champ"));
+                Assert.That(model.TotalChampions, Is.EqualTo(1));
+                Assert.That(
+                    model.Champions.Select(c => c.Id),
+                    Is.EqualTo(new[] { champion.Id }));
+            });
+        }
+
+        [Test]
+        public async Task GetFilteredAsync_ReturnsEmptyResultsWhenNothingMatches()
+        {
+            var model = new ChampionQueryViewModel
+            {
+                SearchTerm = "Nonexistent Champion 987654",
+                CurrentPage = 5
+            };
+
+            await service.GetFilteredAsync(model);
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(model.Champions, Is.Empty);
+                Assert.That(model.TotalChampions, Is.Zero);
+                Assert.That(model.TotalPages, Is.Zero);
+                Assert.That(model.CurrentPage, Is.EqualTo(1));
+            });
+        }
+
+        [Test]
+        public async Task GetFilteredAsync_ReturnsCorrectPagesInNameOrder()
+        {
+            const string prefix = "Pagination Test ";
+
+            for (int i = 11; i >= 1; i--)
+            {
+                database.Context.Champions.Add(new Champion
+                {
+                    Name = $"{prefix}{i:D2}",
+                    Description = "Pagination test champion.",
+                    ImageUrl = "/images/champions/test.jpg"
+                });
+            }
+
+            await database.Context.SaveChangesAsync();
+
+            var firstPage = new ChampionQueryViewModel
+            {
+                SearchTerm = prefix,
+                CurrentPage = 1
+            };
+
+            var secondPage = new ChampionQueryViewModel
+            {
+                SearchTerm = prefix,
+                CurrentPage = 2
+            };
+
+            await service.GetFilteredAsync(firstPage);
+            await service.GetFilteredAsync(secondPage);
+
+            var expectedFirstPage = Enumerable.Range(1, 9)
+                .Select(i => $"{prefix}{i:D2}")
+                .ToArray();
+
+            var expectedSecondPage = new[]
+            {
+        $"{prefix}10",
+        $"{prefix}11"
+    };
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(firstPage.TotalChampions, Is.EqualTo(11));
+                Assert.That(firstPage.TotalPages, Is.EqualTo(2));
+                Assert.That(firstPage.CurrentPage, Is.EqualTo(1));
+
+                Assert.That(
+                    firstPage.Champions.Select(c => c.Name),
+                    Is.EqualTo(expectedFirstPage));
+
+                Assert.That(secondPage.TotalChampions, Is.EqualTo(11));
+                Assert.That(secondPage.CurrentPage, Is.EqualTo(2));
+
+                Assert.That(
+                    secondPage.Champions.Select(c => c.Name),
+                    Is.EqualTo(expectedSecondPage));
+            });
+        }
+
+        [TestCase(0)]
+        [TestCase(-5)]
+        [TestCase(100)]
+        public async Task GetFilteredAsync_AdjustsPageOutsideAvailableRange(
+            int requestedPage)
+        {
+            var champion = await AddChampionAsync();
+
+            var model = new ChampionQueryViewModel
+            {
+                SearchTerm = champion.Name,
+                CurrentPage = requestedPage
+            };
+
+            await service.GetFilteredAsync(model);
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(model.CurrentPage, Is.EqualTo(1));
+                Assert.That(model.TotalChampions, Is.EqualTo(1));
+                Assert.That(
+                    model.Champions.Select(c => c.Id),
+                    Is.EqualTo(new[] { champion.Id }));
+            });
+        }
+
         private async Task<Champion> AddChampionAsync()
         {
             var champion = new Champion
